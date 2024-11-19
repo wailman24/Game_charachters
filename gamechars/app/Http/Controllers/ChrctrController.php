@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ChrctrResource;
 use App\Models\Chrctr;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class ChrctrController extends Controller
      */
     public function index()
     {
-        //
+        return ChrctrResource::collection(Chrctr::all());
     }
 
     /**
@@ -28,15 +29,24 @@ class ChrctrController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'game_id' => 'exists:games,id'
+        ]);
+        $char = Chrctr::create([
+            'name' => $request->name,
+            'game_id' => $request->game_id
+        ]);
+        return new ChrctrResource($char);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Chrctr $chrctr)
+    public function show($id)
     {
-        //
+        $chrctr = Chrctr::find($id);
+        return new ChrctrResource($chrctr);
     }
 
     /**
@@ -50,16 +60,27 @@ class ChrctrController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chrctr $chrctr)
+    public function update(Request $request, $id)
     {
-        //
+        $chrctr = Chrctr::find($id);
+        $request->validate([
+            'name' => 'required',
+            'game_id' => 'exists:games,id'
+        ]);
+
+        $chrctr->update([
+            'name' => $request->name,
+            'game_id' => $request->game_id
+        ]);
+        return new ChrctrResource($chrctr);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chrctr $chrctr)
+    public function destroy($id)
     {
-        //
+        $chrctr = Chrctr::find($id);
+        $chrctr->delete();
     }
 }

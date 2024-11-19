@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChrctrController;
 use App\Http\Controllers\GameController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,4 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::apiResources(['games' => GameController::class]);
+Route::apiResources(['chars' => ChrctrController::class]);

@@ -10,4 +10,8 @@ class Game extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+    public function chrchtrs()
+    {
+        return $this->hasMany(Chrctr::class);
+    }
 }
